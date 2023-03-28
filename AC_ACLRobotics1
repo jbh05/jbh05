@@ -1,0 +1,66 @@
+
+
+# ACLROBOTICS
+
+_Please note that this repository is accessible to all users in the github.com/equinor organization. Do not expose any classified (i.e. restricted or confidential) information in the architecture contract or any other files in this repository._
+
+- **Leading advisor** (primary contact): Unknown
+- **Lead developer/developer contact**: Galvanize 
+- **Git repository**: `https://github.com/equinor/<TBA>` (one or more repositories)
+- **Task manager**: Anne Lene Ritland
+- **Portfolio**: Management system
+
+
+## Leading advisors' summary
+
+Written summary by leading advisors. Include if relevant.
+
+
+## Meeting log, discussions, actions
+
+### 23.01.2023
+
+Participants: Svend Vihovde,Hariharan Sankaran,Anne Lene Ritland, Nikhil Somnath Gadakh,Raju Ajit Das,Jitesh Bhatt,Mayur Rajendra Kasar,Vasantha Bonu type 
+Purpose of meeting : Introdction to ACL Robotics Solution and discussion on Architecture Contract 
+
+
+- Discussion points / key facts...
+e.g. **Cyber Security**, the topic was **Authentication** , what we **discussed** was .... the follow-up **actions** are ...
+
+ - ACLRobotics being introduced along with ACLWIN application.
+ - Need more clarity on the Highbound; what is the purpose of this connection.
+ - Are there any kind of data being transferred outside.
+ - Why user credentials are being transferred/stored in text format in the connector?
+ - Application Users will be using Tags for entering their SAP username and password in script and those credentials will be stored in Robot Agent server and due to that they won’t be asked to re-enter same credentials again(Are they getting stored in robot agent server in an encrypted format?)
+Application users could be authenticated in SAP systems with Equinor Active Directory authentication instead of explicitly using SAP credentials in script(need to discuss and look for this solution implementation)
+- Result data will be getting stored into Robot Agent Server(need to know retention period of data into the folder where result data gets stored)
+- Under robot app configuration, results and logs option is selected, hence need want clarification on what will be shared along with it in the Highbond portal and what Result app will be containing in it.
+ - How is the data stored and managed on the Azure VM?It needs more clarity on the solution to avoid any speculation
+
+
+#### Actions
+
+  - [ ] An outstanding action.
+  - [x] A completed action. *Action taken to resolve.*
+
+## Application Summary
+
+Please list relevant items and/or add a textual description or link for each topic.
+
+| Topic | Response |
+| ----- | --- |
+| DevOps team name(s), size, department              |  [IT SSU - Capgemini](/fg_CAP-SSU@equinor.com),5   |
+| Application functionality and users                |   ACL Robotics is designed exclusively for governance professionals to help make you more efficient by automating time-intensive and repetitive processes. It goes beyond any simple analytic solution or BI technology. ACL Robotics runs your data access, reporting, and remediation tasks from beginning to end.Robots is a HighBond app that also forms part of the ACL Robotics product suite. Robots administration includes user and agent management for the app.Robots is an ACL GRC module that you use to automate repetitive tasks using scripts built in ACL Analytics. Once you create your scripts, you upload them to Robots, where you configure the task automation that you need. Robots handles the recurring tasks according to your configuration.  |
+| Main technologies, hosting platforms, storage, etc |  Hosting platforms : Azure VM for on-premise robot agent, Highbond portal is hosted on AWS in galvanize subscription, data storage: data will get stored in Robot Agent Server    |
+| Software architecture description                  | ![ACL ROBOT ARCHITECTURE](https://user-images.githubusercontent.com/58511499/211474624-437dfeca-a2b0-4581-9b49-dcdcd16d8050.png)  ACL Robot agent is instlled in equinor's server hosted in azure and connection with galvanize higbond portal is established by using registration.key file in order make connection with robot app for creating robots and executing as well as scheduling tasks in it.SAP Connector add-on has been installed in SAP systems(P03,P06 and P07) from where user needs data for performing analytics using scripts and connection to SAP system(with SAP Connector Add-on) from robot agent server gets established via SAP logon and ACL connnector which gets installed with application package. Only authorized user having required SAP Roles P03(YC307_01,YC307_02,YC307_03,YC307_04,YC307_05,YC307_06,YC307_07,YC307_08,YC307_09,YC307_10,YC307_11,YC307_12),P07: YH203,P06: YS206 will be able to extract the data from SAP systems.All the result data from robot agent will be stored in [Equinor's Azure Server(S131WACLA01P.statoil.net)](https://portal.azure.com/#@StatoilSRM.onmicrosoft.com/asset/Microsoft_Azure_Compute/VirtualMachine/subscriptions/a0d76d5f-1982-4571-9325-10f116a653cf/resourceGroups/s131-noe-acl-prd/providers/Microsoft.Compute/virtualMachines/S131WACLA01P)).User authentication will be managed through Active Directory and access provisioning will be done via AccessIT|
+| Link to architecture diagrams, preferably [C4 model](https://c4model.com/) | [Architecture Diagram](https://github.com/nsg04/architecturecontract/blob/master/resources/ACLROBOT%20ARCHITECTURE.png)|
+| [Link to EA self assessment questions](/template/EA_topics.md), relevant for EA topics.| [Security Risk Self Assessment](https://sra.equinor.com/plugins/servlet/desk/portal/1/SELF-712) |
+| APIs / interfaces (# of interfaces, types, key interfaces, etc) |  [Highbond Portal](https://equinor-asa.robotics-eu.highbond.com/), SAP-Connector Add-on,[Azure Active Directory Enterprise Application](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/d83085f9-7069-403e-8e03-440f39d873df/isMSAApp~/false)   |
+| Key dependencies (e.g. services, infrastructure, teams, etc)    |Services : SAP-Connector Add-on to be installed in SAP systems. Infrastructure: Active Directory Enterprise Application for user authentication and SSO,Azure VM for hosting robot Agent,Highbond portal hosted in Galvanize's AWS subcription. Teams : Azure VM support (IT AzureOps-CAPGEMINI), Application Support (IT SSU -Capgemini) Highbond support : support@wegalvanize.com |
+| Information classification, ref [WR0185 3.3](https://docmap.equinor.com/Docmap/page/doc/dmDocIndex.html?DOCID=1000006094#) |   Confidential  |
+| Authentication & authorization (flows, mechanisms, protocols, etc) |User authentication will be managed through [Active Directory](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/d83085f9-7069-403e-8e03-440f39d873df/isMSAApp~/false) and access provisioning will be done via AccessIT(https://accessit.equinor.com/). Robot Agent(server) to SAP authentication needs to happen with the user credentials by using required tag in script.|
+| Test routines                                      |Penetration testing or similar are performed regularly by Galvanize and Equinor will be informed if testing reveals critical vulnerabilities. |
+| Build-deploy routines                              |  This comes under Galvanize scope  |
+| Link to Runbook                                    | [Runbook](https://statoilsrm.sharepoint.com/:w:/r/sites/ts-32693/Systems%20Documentation/_layouts/15/Doc.aspx?sourcedoc=%7B638E72DE-9F5E-4FF9-AF58-1D1E81A5722C%7D&file=EQUINOR_RUNBOOK_ACLWIN.docx&action=default&mobileredirect=true)    |
+| Modernisation plans                                | This comes under Galvanize scope  |
+| Other info                                         |  NA   |
